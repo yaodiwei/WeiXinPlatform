@@ -1,0 +1,20 @@
+<%@ page pageEncoding="UTF-8"%>
+<c:if test="${pagination.pageCount > 1}">
+	<tr>
+		<td colspan="100" class="paging"> Page <c:forEach begin="1" end="${pagination.pageCount}" var="index">
+			<c:choose>
+				<c:when test="${index > 3 && index <= pagination.pageCount - 3 && (index < pagination.pageIndex - 2 || index > pagination.pageIndex + 2)}">
+					<c:if test="${(index == 4 && pagination.pageIndex > 6) || (index == pagination.pageCount - 3 && pagination.pageIndex < pagination.pageCount - 5) }">
+						. . .
+					</c:if>
+				</c:when>
+				<c:when test="${index == pagination.pageIndex}">
+					<span>${index }</span>
+				</c:when>
+				<c:otherwise>
+					<a href="#" class="pageNumber">${index }</a>
+				</c:otherwise>
+			</c:choose>
+		</c:forEach></td>
+	</tr>
+</c:if>

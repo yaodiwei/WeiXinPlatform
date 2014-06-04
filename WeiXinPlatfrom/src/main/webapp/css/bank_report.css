@@ -1,0 +1,29 @@
+table.reportTable {
+	width: 640px;
+}
+
+.ui-autocomplete-input {
+	width: 60px;
+}
+
+#reportForm label {
+	width: 50px;
+}
+
+#totalBalanceDiv {
+	margin-bottom: 10px;
+	width: 650px;
+}
+
+#totalBalanceDiv label {
+	font-weight: bold;
+	padding-right: 20px;
+}
+
+#totalBalanceDiv #currentBalance {
+	font-size: 13px;
+	display: inline-block;
+	padding-left: 5px;
+	text-decoration: underline;
+	font-weight: bold;
+}

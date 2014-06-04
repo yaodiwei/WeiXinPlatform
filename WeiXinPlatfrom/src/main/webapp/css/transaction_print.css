@@ -1,0 +1,29 @@
+div,.buttons, button {
+	display: none;
+	position: absolute !important;
+	left: 0 !important;
+	top: 0 !important;
+}
+
+div.printframe {
+	display: block;
+	margin: 0;
+	padding: 0;
+}
+
+div.printarea {
+	display: block;
+	width: 640px;
+}
+
+.onlyPrint {
+	display: block;
+}
+
+h2.printTitle {
+	margin-bottom: 20px;
+}
+
+table.reportTable {
+	box-shadow: none;
+}

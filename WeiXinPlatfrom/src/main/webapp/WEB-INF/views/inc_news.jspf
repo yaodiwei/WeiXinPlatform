@@ -1,0 +1,40 @@
+<%@ page pageEncoding="UTF-8"%>
+
+<div id="news">
+<ul style="">
+	<li><a href="#f100">Functions in 1.0.0</a></li>
+</ul>
+
+<div id="f100">
+<dl>
+	<dt><a href="<c:url value="/betbrokerer" />">Operator Login</a></dt>
+	<dd>XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX</dd>
+	<dt><a href="<c:url value="/websitereferral" />">Operator Portal Layout</a></dt>
+	<dd>XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX</dd>
+	<dt><a href="<c:url value="/datapool/upload" />">User Registration</a></dt>
+	<dd>XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX</dd>
+	<dt><a href="<c:url value="/auditlog" />">Package Setup</a></dt>
+	<dd>XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX</dd>
+	<dt><a href="<c:url value="/master" />">Manage existing user</a></dt>
+	<dd>XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX</dd>
+	<dt><a href="<c:url value="/category" />">Subscription Management</a></dt>
+	<dd>XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX</dd>
+	<dt><a href="<c:url value="/unit" />">Reporting</a></dt>
+	<dd>XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX</dd>
+	<dt><a href="<c:url value="/currency" />">Feed User Login</a></dt>
+	<dd>XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX</dd>
+	<dt><a href="<c:url value="/operator" />">Feed API Usage</a></dt>
+	<dd>XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX</dd>
+	<dt><a href="<c:url value="/operator" />">Error message</a></dt>
+	<dd>XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX</dd>
+</dl>
+</div>
+</div>
+
+<div class="clear"></div>
+
+<script>
+	$('#news').tabs( {
+		collapsible : true
+	});
+</script>

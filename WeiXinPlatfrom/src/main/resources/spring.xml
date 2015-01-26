@@ -23,15 +23,23 @@
 	<aop:aspectj-autoproxy />
 	<!-- end aop -->
 
+	<!-- chche -->
+	<cache:annotation-driven cache-manager="cacheManager" />
+	<bean id="cacheManagerFactory"
+		class="org.springframework.cache.ehcache.EhCacheManagerFactoryBean"
+		p:configLocation="classpath:ehcache.xml" />
+	<bean id="cacheManager" class="org.springframework.cache.ehcache.EhCacheCacheManager"
+		p:cacheManager-ref="cacheManagerFactory" />
+	<!-- end chche -->
 
 	<!-- database -->
 	<!-- <bean id="DataSource" class="org.apache.commons.dbcp.BasicDataSource" destroy-method="close"> -->
 	<bean id="dataSource" class="org.springframework.jdbc.datasource.DriverManagerDataSource">
 		<property name="driverClassName" value="com.mysql.jdbc.Driver" />
 		<property name="url"
-			value="jdbc:mysql://127.0.0.1:3306/gsm?useUnicode=true&amp;characterEncoding=UTF-8" />
+			value="jdbc:mysql://127.0.0.1:3306/weixinplatform?useUnicode=true&amp;characterEncoding=UTF-8" />
 		<property name="username" value="root" />
-		<property name="password" value="zaq12wsx" />
+		<property name="password" value="" />
 	</bean>
 	<bean id="transactionManager"
 		class="org.springframework.jdbc.datasource.DataSourceTransactionManager">

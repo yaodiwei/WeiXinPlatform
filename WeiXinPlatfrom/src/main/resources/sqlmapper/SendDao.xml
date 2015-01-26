@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.lgbear.weixinplatform.message.dao.SendDao">
+	<resultMap type="com.lgbear.weixinplatform.message.domain.Passive" id="passiveMap">
+	</resultMap>
+
+	<insert id="insert">
+		insert into Passive (
+		operatorid,
+		name,
+		value,
+		enable
+		) values (
+		#{operatorId,jdbcType=VARCHAR},
+		#{name,jdbcType=VARCHAR},
+		#{value,jdbcType=VARCHAR},
+		#{enable,jdbcType=INTEGER}
+		)
+	</insert>
+	
+	<select id="findAll" resultMap="passiveMap">
+		select 
+		name,
+		value,
+		enable
+		from Passive 
+		where operatorid = #{operatorId} 
+	</select>
+	
+	<select id="findEnable" resultMap="passiveMap">
+		select 
+		name,
+		value
+		from Passive 
+		where 
+		operatorid = #{operatorId}  and
+		enable = 1
+	</select>
+	
+	<update id="update">
+		update Passive
+		set value = #{value},
+		enable = #{enable}
+		where name = #{name} and operatorid = #{operatorId}
+	</update>
+	
+	<delete id="deleteByName">
+		delete from Passive where name = #{name} and operatorid = #{operatorId}
+	</delete>
+	
+	<select id="find48HourUser" resultType="int">
+		select 
+		Text.openid,
+		User.nickname
+		from Text join User on Text.openid = User.openid 
+		where 
+		text.operatorid = #{operatorId} and 
+		#{currentTime} - createtime &lt; 172800
+	</select>
+</mapper>

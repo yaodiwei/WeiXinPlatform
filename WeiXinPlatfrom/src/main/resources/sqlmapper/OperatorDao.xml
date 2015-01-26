@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.lgbear.weixinplatform.operator.dao.OperatorDao">
+	<resultMap type="com.lgbear.weixinplatform.operator.domain.Operator" id="operatorMap">
+	</resultMap>
+	
+	<update id="update">
+		update Operator
+		set
+		appid = #{appId,jdbcType=VARCHAR},
+		operatorid = #{operatorId,jdbcType=VARCHAR},
+		appsecret = #{appSecret,jdbcType=VARCHAR}
+		where loginname = #{loginName}
+	</update>
+	
+	
+	<select id="find" resultMap="operatorMap">
+		select appid,
+		operatorid,
+		appsecret,
+		loginname
+		from Operator where loginname = #{loginName}
+	</select>
+	
+</mapper>

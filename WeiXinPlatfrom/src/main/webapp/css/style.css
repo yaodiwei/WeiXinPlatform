@@ -96,7 +96,7 @@ label.error,span.error {
 }
 
 #menu {
-	background-color: #414141;
+	background-color: #113F3D;
 }
 
 #menu ul a {
@@ -113,7 +113,7 @@ label.error,span.error {
 	display: inline;
 	float: left;
 	position: relative;
-	background-color: #414141;
+	background-color: #113F3D;
 	border-right: 1px solid #777;
 	display: block;
 	z-index: 100;

@@ -1,56 +1,57 @@
 package com.lgbear.weixinplatform.api.service;
 
 import net.sf.json.JSONObject;
+
 import org.dom4j.Document;
 import org.dom4j.Element;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.stereotype.Service;
+
 import com.lgbear.weixinplatform.api.domain.*;
+import com.lgbear.weixinplatform.message.service.EventService;
+import com.lgbear.weixinplatform.message.service.TextService;
+
+import javax.annotation.Resource;
 import javax.servlet.http.HttpServletResponse;
+
 import java.io.IOException;
 
+@Service
 public class MessageService {
+	
 	protected Logger log = LoggerFactory.getLogger(getClass());
 
-	public WeixinMessage loadMessageFormXML(Document document, HttpServletResponse response) {
-		log.info("method loadMessageFormXML start");
-		if (document == null) {
-			return null;
-		}
+	@Resource
+	TextService textService;
+	
+	@Resource
+	EventService eventService;
+	
+	public void loadMessageFormXML(Document document, HttpServletResponse response) {
 		Element root = document.getRootElement();
-		String ToUserName = root.elementText("ToUserName");
-		String FromUserName = root.elementText("FromUserName");
-		String CreateTime = root.elementText("CreateTime");
-		if (CreateTime == null || "".equals(CreateTime.trim())) {
-			CreateTime = (System.currentTimeMillis() + "").substring(0, 10);
-		}
 		String MsgType = root.elementText("MsgType");
-		WeixinMessage weixinMessage;
-		if (MsgType == null || "".equals(MsgType.trim())) {
-			return null;
-		}
-		if (WeixinMessage.TEXT.equals(MsgType.trim())) {
-			weixinMessage = loadTextMessage(ToUserName, FromUserName, CreateTime, root, response);
-		} else if (WeixinMessage.IMAGE.equals(MsgType.trim())) {
-			weixinMessage = loadImageMessage(ToUserName, FromUserName, CreateTime, root);
-		} else if (WeixinMessage.LOCATION.equals(MsgType.trim())) {
-			weixinMessage = loadLocationMessage(ToUserName, FromUserName, CreateTime, root);
-		} else if (WeixinMessage.LINK.equals(MsgType.trim())) {
-			weixinMessage = loadLinkMessage(ToUserName, FromUserName, CreateTime, root);
-		} else if (WeixinMessage.EVENT.equals(MsgType.trim())) {
-			weixinMessage = loadEventMessage(ToUserName, FromUserName, CreateTime, root);
+		if ("text".equals(MsgType)) {
+			textService.loadTextMessage(document, response);
+		} else if (WeixinMessage.IMAGE.equals(MsgType)) {
+//			loadImageMessage(ToUserName, FromUserName, CreateTime, root);
+		} else if (WeixinMessage.LOCATION.equals(MsgType)) {
+//			loadLocationMessage(ToUserName, FromUserName, CreateTime, root);
+		} else if (WeixinMessage.LINK.equals(MsgType)) {
+//			loadLinkMessage(ToUserName, FromUserName, CreateTime, root);
+		} else if (WeixinMessage.EVENT.equals(MsgType)) {
+//			loadEventMessage(ToUserName, FromUserName, CreateTime, root);
+			eventService.loadEventMessage(document, response);
 		} else {
-			return null;
+			
 		}
-		log.info("\n" + JSONObject.fromObject(weixinMessage).toString(2));
-		return weixinMessage;
 	}
 
 	private WeixinMessage loadTextMessage(String ToUserName, String FromUserName, String CreateTime, Element root, HttpServletResponse response) {
 		TextMessage weixinMessage = new TextMessage();
 		weixinMessage.setToUserName(ToUserName);
 		weixinMessage.setFromUserName(FromUserName);
-		weixinMessage.setCreateTime(Integer.parseInt(CreateTime));
+		weixinMessage.setCreateTime(CreateTime);
 		weixinMessage.setContent(root.elementText("Content"));
 		weixinMessage.setMsgId(root.elementText("MsgId"));
 		sendText(ToUserName, FromUserName, CreateTime, response, "你好");
@@ -61,7 +62,7 @@ public class MessageService {
 		ImageMessage weixinMessage = new ImageMessage();
 		weixinMessage.setToUserName(ToUserName);
 		weixinMessage.setFromUserName(FromUserName);
-		weixinMessage.setCreateTime(Integer.parseInt(CreateTime));
+		weixinMessage.setCreateTime(CreateTime);
 		weixinMessage.setPicUrl(root.elementText("PicUrl"));
 		weixinMessage.setMsgId(root.elementText("MsgId"));
 		return (WeixinMessage) weixinMessage;
@@ -71,7 +72,7 @@ public class MessageService {
 		LocationMessage weixinMessage = new LocationMessage();
 		weixinMessage.setToUserName(ToUserName);
 		weixinMessage.setFromUserName(FromUserName);
-		weixinMessage.setCreateTime(Integer.parseInt(CreateTime));
+		weixinMessage.setCreateTime(CreateTime);
 		weixinMessage.setLocation_X(root.elementText("Location_X"));
 		weixinMessage.setLocation_Y(root.elementText("Location_Y"));
 		weixinMessage.setScale(root.elementText("Scale"));
@@ -84,7 +85,7 @@ public class MessageService {
 		LinkMessage weixinMessage = new LinkMessage();
 		weixinMessage.setToUserName(ToUserName);
 		weixinMessage.setFromUserName(FromUserName);
-		weixinMessage.setCreateTime(Integer.parseInt(CreateTime));
+		weixinMessage.setCreateTime(CreateTime);
 		weixinMessage.setTitle(root.elementText("Title"));
 		weixinMessage.setDescription(root.elementText("Description"));
 		weixinMessage.setUrl(root.elementText("Url"));
@@ -98,7 +99,7 @@ public class MessageService {
 			LocationEventMessage locationEventMessage = new LocationEventMessage();
 			locationEventMessage.setToUserName(ToUserName);
 			locationEventMessage.setFromUserName(FromUserName);
-			locationEventMessage.setCreateTime(Integer.parseInt(CreateTime));
+			locationEventMessage.setCreateTime(CreateTime);
 			locationEventMessage.setEvent(event);
 			locationEventMessage.setLatitude(root.elementText("Latitude"));
 			locationEventMessage.setLongitude(root.elementText("Longitude"));
@@ -108,7 +109,7 @@ public class MessageService {
 			EventMessage weixinMessage = new EventMessage();
 			weixinMessage.setToUserName(ToUserName);
 			weixinMessage.setFromUserName(FromUserName);
-			weixinMessage.setCreateTime(Integer.parseInt(CreateTime));
+			weixinMessage.setCreateTime(CreateTime);
 			weixinMessage.setEvent(root.elementText("Event"));
 			weixinMessage.setEventKey(root.elementText("EventKey"));
 			return (WeixinMessage) weixinMessage;

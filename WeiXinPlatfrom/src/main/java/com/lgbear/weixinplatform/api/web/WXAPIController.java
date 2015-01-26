@@ -1,10 +1,13 @@
 package com.lgbear.weixinplatform.api.web;
 
+import java.io.UnsupportedEncodingException;
 import java.util.Arrays;
 
+import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import org.apache.http.entity.StringEntity;
 import org.dom4j.Document;
 import org.dom4j.DocumentException;
 import org.dom4j.DocumentHelper;
@@ -21,14 +24,17 @@ import com.lgbear.weixinplatform.base.util.SHA1;
 import com.lgbear.weixinplatform.base.web.BaseController;
 
 @Controller
-@RequestMapping("/api/wx")
+@RequestMapping("/api")
 public class WXAPIController extends BaseController {
 
+	@Resource
+	MessageService messageService;
+	
 	@RequestMapping(method = RequestMethod.GET)
 	@ResponseBody
 	public String signature(Signature signature) {
 		log.info("signature=" + signature);
-		String[] temp = new String[] { "rayUpUpUphahahahha", signature.getTimestamp(), signature.getNonce() };
+		String[] temp = new String[] { "yao", signature.getTimestamp(), signature.getNonce() };
 		log.info("temp=" + temp);
 		Arrays.sort(temp);
 		String jmh = "";
@@ -48,24 +54,11 @@ public class WXAPIController extends BaseController {
 	public void handle(HttpServletRequest request, HttpServletResponse response) {
 		String xmlData = WeixinUtil.loadXmlFromRequest(request);
 		try {
-			WeixinMessage weixinMessage = generateWeixinMessage(xmlData, response);
-			if (weixinMessage != null) {
-				log.info("fromUser=" + weixinMessage.getFromUserName());
-			}
+			log.info("xmlData=" + xmlData);
+			Document document = DocumentHelper.parseText(xmlData);
+			messageService.loadMessageFormXML(document, response);
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
-	}
-
-	private WeixinMessage generateWeixinMessage(String xmlData, HttpServletResponse response) throws DocumentException {
-		log.info("xmlData=" + xmlData);
-		Document document = null;
-		if (xmlData != null && !xmlData.isEmpty()) {
-			document = DocumentHelper.parseText(xmlData);
-		} else {
-			return null;
-		}
-		WeixinMessage weixinMessage = new MessageService().loadMessageFormXML(document, response);
-		return weixinMessage;
 	}
 }

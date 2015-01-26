@@ -1,0 +1,111 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.lgbear.weixinplatform.user.dao.UserDao">
+	<resultMap type="com.lgbear.weixinplatform.user.domain.User" id="userMap">
+	</resultMap>
+
+	<insert id="insert">
+		insert into User (
+		openid,
+		nickname,
+		sex,
+		country,
+		province,
+		city,
+		headimgurl,
+		subscribetime
+		) values (
+		#{openId,jdbcType=VARCHAR},
+		#{nickName,jdbcType=VARCHAR},
+		#{sex,jdbcType=INTEGER},
+		#{country,jdbcType=VARCHAR},
+		#{province,jdbcType=VARCHAR},
+		#{city,jdbcType=VARCHAR},
+		#{headImgUrl,jdbcType=VARCHAR},
+		#{subscribeTime,jdbcType=INTEGER}
+		);
+	</insert>
+	
+	<update id="update">
+		update User
+		set
+		openid = #{openId,jdbcType=VARCHAR},
+		nickname = #{nickName,jdbcType=VARCHAR},
+		sex = #{sex,jdbcType=INTEGER},
+		country = #{country,jdbcType=VARCHAR},
+		city = #{city,jdbcType=VARCHAR},
+		headimgurl = #{headImgUrl,jdbcType=VARCHAR},
+		subscribetime = #{subscribeTime,jdbcType=INTEGER}
+		where openid = #{openId}
+	</update>
+	
+	
+	<select id="findByOpenId" resultMap="userMap">
+		select openid,
+		nickname,
+		sex,
+		country,
+		province,
+		city,
+		headimgurl,
+		subscribe_time
+		from User where openid = #{openId}
+	</select>
+	
+	<select id="findOpenId" resultType="String">
+		select openid from User where openid = #{openId}
+	</select>
+	
+	<sql id="findByCriteriaWhere">
+		<choose>
+			<when test="criteria.like">
+				<if test="criteria.nickName != null and criteria.nickName != ''">
+					AND UPPER(nickname) like CONCAT('%',UPPER(#{criteria.nickName}),'%')
+				</if>
+			</when>
+			<otherwise>
+				<if test="criteria.nickName != null and criteria.nickName != ''">
+					AND nickname = #{criteria.nickName}
+				</if>
+			</otherwise>
+		</choose>
+	</sql>
+
+	<select id="findByCriteria" resultMap="userMap">
+		select * from User
+		<where>
+			<include refid="findByCriteriaWhere" />
+		</where>
+		limit #{offset}, #{limit}
+	</select>
+
+	<select id="countByCriteria" resultType="int">
+		select count(*)
+		from User
+		<where>
+			<include refid="findByCriteriaWhere" />
+		</where>
+	</select>
+	
+	<delete id="deleteByUserCode">
+		delete from User where nikename = #{nickName}
+	</delete>
+	
+	<select id="find48HourUser" resultMap="userMap">
+		select openid, nickname, headimgurl 
+		from User
+		where openid in (
+			select openid from (
+				select max(createtime),
+				openid
+				from Text
+				where 
+				Text.operatorid = #{operatorId} and 
+				#{currentTime} - createtime &lt; 172800
+				group by openid
+			) table_temp
+		)
+	</select>
+</mapper>

@@ -1,0 +1,112 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.lgbear.weixinplatform.message.dao.TextDao">
+	<resultMap type="com.lgbear.weixinplatform.message.domain.Text" id="textMap">
+	</resultMap>
+
+	<insert id="insert">
+		insert into Text (
+		msgid,
+		content,
+		createtime,
+		openid,
+		operatorid
+		) values (
+		#{msgId,jdbcType=VARCHAR},
+		#{content,jdbcType=VARCHAR},
+		#{createTime,jdbcType=INTEGER},
+		#{openId,jdbcType=VARCHAR},
+		#{operatorId,jdbcType=VARCHAR}
+		);
+	</insert>
+	
+	<select id="findByOpeatorId" resultMap="textMap">
+		select 
+		msgid,
+		content,
+		createtime,
+		User.nickname as openid,
+		Operator.loginname as operatorid
+		from Text join User on Text.openid = User.openid 
+		join Operator on Text.operatorid = Operator.operatorid
+		where Operator.operatorid = #{operatorId} 
+		order by createtime desc
+		limit 0, 20
+	</select>
+	
+	<select id="countByOpeatorId" resultType="int">
+		select count(*)
+		from Text
+		where operatorid = #{operatorId} 
+		order by createtime desc
+	</select>
+	
+	<select id="findByOpenIdAndOpeatorId" resultMap="textMap">
+		select 
+		msgid,
+		content,
+		createtime,
+		User.nickname as openid,
+		Operator.loginname as operatorid
+		from Text join User on Text.openid = User.openid 
+		join Operator on Text.operatorid = Operator.operatorid
+		where User.openid = #{openId} and Operator.operatorid = #{operatorId}
+		order by createtime desc
+	</select>
+	
+	<select id="countByOpenIdAndOpeatorId" resultType="int">
+		select count(*)
+		from Text where openid = #{openId} and operatorid = #{operatorId}
+		order by createtime desc
+	</select>
+	
+	<sql id="findByCriteriaWhere">
+		<choose>
+			<when test="criteria.like">
+				<if test="criteria.content != null and criteria.content != ''">
+					AND UPPER(content) like CONCAT('%',UPPER(#{criteria.content}),'%')
+				</if>
+			</when>
+			<otherwise>
+				<if test="criteria.content != null and criteria.content != ''">
+					AND nickname = #{criteria.content}
+				</if>
+			</otherwise>
+		</choose>
+	</sql>
+	
+	<select id="findByCriteria" resultMap="textMap">
+		select
+		msgid,
+		content,
+		createtime,
+		openid,
+		operatorid
+		from Text
+		<where>
+			<include refid="findByCriteriaWhere" />
+		</where>
+		order by createtime desc
+	</select>
+	
+	<select id="countByCriteria" resultType="int">
+		select count(*)
+		from Text
+		<where>
+			<include refid="findByCriteriaWhere" />
+		</where>
+	</select>
+	
+	<delete id="deleteByMsgId">
+		delete from Text where msgid = #{msgId}
+	</delete>
+	
+	<select id="findLastMsgTimeByOpenId" resultType="int">
+		select max(createtime)
+		from Text
+		where openid = #{openId} and operatorid = #{operatorId}
+	</select>
+	
+</mapper>

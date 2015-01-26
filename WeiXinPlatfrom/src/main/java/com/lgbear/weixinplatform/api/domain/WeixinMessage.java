@@ -4,7 +4,7 @@ public abstract class WeixinMessage {
 
 	private String toUserName;
 	private String fromUserName;
-	private int createTime;
+	private String createTime;
 	protected String msgType;
 	public static final String TEXT = "text";
 	public static final String IMAGE = "image";
@@ -30,11 +30,11 @@ public abstract class WeixinMessage {
 		this.fromUserName = fromUserName;
 	}
 
-	public int getCreateTime() {
+	public String getCreateTime() {
 		return createTime;
 	}
 
-	public void setCreateTime(int createTime) {
+	public void setCreateTime(String createTime) {
 		this.createTime = createTime;
 	}
 

@@ -4,12 +4,24 @@
 	<ul>
 		<li><a href="<c:url value="/" />">主页</a></li>
 		<li><a href="<c:url value="/receive" />">接收消息</a></li>
-		<li><a href="<c:url value="/send" />">发送消息</a></li>
+		<li><a class="sub_menu" href="javascript:void(0);">发送消息</a>
+		<ul>
+			<li><a href="<c:url value="/send/passive" />">发动被动响应消息</a></li>
+			<li><a href="<c:url value="/send/active" />">发送客服消息</a></li>
+		</ul>
+		</li>
 		<li><a href="<c:url value="/menu" />">菜单管理</a></li>
+		<li><a class="sub_menu" href="javascript:void(0);">用户管理</a>
+		<ul>
+			<li><a href="<c:url value="/user/weixinlist" />">微信用户列表</a></li>
+			<li><a href="<c:url value="/user/list" />">数据库用户列表</a></li>
+		</ul>
+		</li>
+		<li><a href="<c:url value="/setting" />">个人设置</a></li>
 	</ul>
 	<div class="clear"></div>
 </div>
-<div id="logo"><img src="images/logo.png" width="5%" height="5%"/> <span id="webname">${app:name() }</span>
+<!-- <div id="logo"><img src="images/logo.png" width="5%" height="5%"/> <span id="webname">${app:name() }</span> -->
 	<div id="nav">
 	<a href="<c:url value="/" />">Home</a> | <a href="<c:url value="logout" />">Logout</a>
 	</div>
